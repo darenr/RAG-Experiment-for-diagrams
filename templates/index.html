@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Diagram Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-box {
+            padding: 10px;
+            width: 70%;
+            font-size: 16px;
+        }
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .diagram-container {
+            margin: 20px 0;
+        }
+        .diagram-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+            display: none;
+        }
+        .loading {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Diagram Search</h1>
+    
+    <div class="search-container">
+        <form id="search-form">
+            <input type="text" id="search-input" class="search-box" placeholder="Enter your question about the diagram...">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+        <div class="loading" id="loading">Searching...</div>
+    </div>
+    
+    <div class="diagram-container">
+        <h2>Diagram</h2>
+        <img src="/static/page1.png" alt="Diagram">
+    </div>
+    
+    <div class="result-container" id="result-container">
+        <h2>Result</h2>
+        <div id="result-content"></div>
+    </div>
+
+    <script>
+        document.getElementById('search-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const query = document.getElementById('search-input').value.trim();
+            
+            if (!query) return;
+
+            // Show loading indicator
+            document.getElementById('loading').style.display = 'block';
+            
+            try {
+                const response = await fetch(`/api/query?query=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                
+                // Display the result
+                const resultContainer = document.getElementById('result-container');
+                const resultContent = document.getElementById('result-content');
+                
+                resultContainer.style.display = 'block';
+                
+                // Extract the answer from the response
+                if (data && data.choices && data.choices.length > 0) {
+                    resultContent.textContent = data.choices[0].message.content;
+                } else {
+                    resultContent.textContent = "Sorry, no results found.";
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result-content').textContent = "An error occurred while searching.";
+                document.getElementById('result-container').style.display = 'block';
+            } finally {
+                // Hide loading indicator
+                document.getElementById('loading').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
