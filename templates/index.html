@@ -117,8 +117,8 @@
                 resultContainer.style.display = 'block';
                 
                 // Extract the answer from the response
-                if (data && data.choices && data.choices.length > 0) {
-                    resultContent.textContent = data.choices[0].message.content;
+                if (data && data.length > 0) {
+                    resultContent.innerHTML = data;
                 } else {
                     resultContent.textContent = "Sorry, no results found.";
                 }

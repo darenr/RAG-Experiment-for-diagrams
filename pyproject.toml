@@ -7,7 +7,9 @@ requires-python = ">=3.11"
 dependencies = [
     "flask>=3.1.2",
     "hnswlib>=0.8.0",
+    "joblib>=1.5.1",
     "loguru>=0.7.3",
+    "markdown>=3.8.2",
     "openai>=1.101.0",
     "rich>=14.1.0",
 ]
