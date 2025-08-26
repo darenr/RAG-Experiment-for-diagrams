@@ -4,31 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RAG Diagram Search</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
+        }
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        .left-container {
+            flex: 1;
+            min-width: 300px;
+        }
+        .right-container {
+            flex: 1;
         }
         .search-container {
             margin-bottom: 20px;
         }
         .search-box {
             padding: 10px;
-            width: 70%;
+            width: 100%;
             font-size: 16px;
+            box-sizing: border-box;
         }
         .search-button {
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #4285f4;
-            color: white;
             border: none;
             cursor: pointer;
+            margin-top: 10px;
         }
         .diagram-container {
-            margin: 20px 0;
+            margin: 0;
+            position: sticky;
+            top: 20px;
         }
         .diagram-container img {
             max-width: 100%;
@@ -37,9 +54,7 @@
         .result-container {
             margin-top: 20px;
             padding: 15px;
-            border: 1px solid #ddd;
             border-radius: 5px;
-            background-color: #f9f9f9;
             white-space: pre-wrap;
             display: none;
         }
@@ -47,27 +62,38 @@
             display: none;
             margin-top: 10px;
         }
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Diagram Search</h1>
     
-    <div class="search-container">
-        <form id="search-form">
-            <input type="text" id="search-input" class="search-box" placeholder="Enter your question about the diagram...">
-            <button type="submit" class="search-button">Search</button>
-        </form>
-        <div class="loading" id="loading">Searching...</div>
-    </div>
-    
-    <div class="diagram-container">
-        <h2>Diagram</h2>
-        <img src="/static/page1.png" alt="Diagram">
-    </div>
-    
-    <div class="result-container" id="result-container">
-        <h2>Result</h2>
-        <div id="result-content"></div>
+    <div class="main-container">
+        <div class="left-container">
+            <div class="search-container">
+                <h2>Ask a Question</h2>
+                <form id="search-form">
+                    <input type="text" id="search-input" class="search-box" placeholder="Enter your question about the diagram...">
+                    <button type="submit" class="search-button">Search</button>
+                </form>
+                <div class="loading" id="loading">Searching...</div>
+            </div>
+            
+            <div class="result-container" id="result-container">
+                <div id="result-content"></div>
+            </div>
+        </div>
+        
+        <div class="right-container">
+            <div class="diagram-container">
+                <h2>Diagram</h2>
+                <img src="/static/page1.png" alt="Diagram">
+            </div>
+        </div>
     </div>
 
     <script>
